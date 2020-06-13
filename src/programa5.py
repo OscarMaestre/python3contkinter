@@ -12,13 +12,9 @@ for fila in range(0, MAX_FILAS):
         boton=tk.Button(raiz, text=texto)
         boton.grid(row=fila, column=columna)
 
-
-boton_extra=tk.Button(raiz, text="Boton en (3,1)")
-#Nuestro control se expande para poder "pegarse" a los lados
-boton_extra.grid(row=3, column=1, columnspan=2, sticky="ew")
-
-
-for fila in range(0, MAX_FILAS+1):
+#Ahora asignamos el mismo peso a todas las filas 
+#y ningún peso a las columnas.
+for fila in range(0, MAX_FILAS):
     raiz.grid_rowconfigure(fila, weight=1)
-    
+
 raiz.mainloop()

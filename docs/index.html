@@ -243,6 +243,117 @@
 </div>
 <div class="section" id="peso-de-una-fila-o-columna">
 <h2>Peso de una fila o columna<a class="headerlink" href="#peso-de-una-fila-o-columna" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Hemos visto que:</p>
+<ul class="simple">
+<li>Las filas y columnas de un contenedor permiten diseñar el interfaz.</li>
+<li>A veces un control podría ocupar varias filas y columnas y <strong>por defecto no ocupará el espacio sobrante</strong></li>
+</ul>
+<p>Aquí entra en juego el peso de las filas o columnas. Cuando diseñamos un interfaz basado en rejilla ocurre que por defecto <strong>las filas y columnas no aprovecharán el espacio sobrante.</strong> (este concepto ya debería sonarnos). Para permitir que se aproveche el espacio extra que pueda aparecer cuando se redimensiona una ventana podemos asignar a filas o columnas un <strong>peso</strong></p>
+<p>Volvamos a tomar nuestro programa que crea una pequeña matriz de botones y asignemos por ejemplo un peso igual a cada fila.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">MAX_FILAS</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">MAX_COLUMNAS</span><span class="o">=</span><span class="mi">4</span>
+
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">columna</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_COLUMNAS</span><span class="p">):</span>
+        <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Boton en ({0},{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">texto</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">fila</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">columna</span><span class="p">)</span>
+
+<span class="c1">#Ahora asignamos el mismo peso a todas las filas </span>
+<span class="c1">#y ningún peso a las columnas.</span>
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="n">raiz</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Que vuelve a producir este resultado en principio</p>
+<div class="align-center figure" id="id9">
+<img alt="_images/programa5.png" src="_images/programa5.png" />
+<p class="caption"><span class="caption-text">Matriz de botones con pesos</span></p>
+</div>
+<p>Pero ahora veamos algo muy interesante. Cada fila tiene un peso (y de hecho todas tienen el mismo) ¿qué ocurre si aumentamos <strong>la altura</strong> de la ventana?</p>
+<div class="align-center figure" id="id10">
+<img alt="_images/programa5-1.png" src="_images/programa5-1.png" />
+<p class="caption"><span class="caption-text">Ventana con mayor altura</span></p>
+</div>
+<p>Ha ocurrido algo que debería sonarnos: los botones parece que ahora disponen de más altura <strong>pero no la están aprovechando.</strong> Probablemente se deba a que no hemos usado <code class="docutils literal notranslate"><span class="pre">sticky</span></code> para aprovechar ese espacio extra.</p>
+<p>Modificamos el programa para que ahora los botones se ensanchen por arriba (norte, n) y por abajo (sur, s).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">MAX_FILAS</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">MAX_COLUMNAS</span><span class="o">=</span><span class="mi">4</span>
+
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">columna</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_COLUMNAS</span><span class="p">):</span>
+        <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Boton en ({0},{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">texto</span><span class="p">)</span>
+        <span class="c1">#Usamos sticky para que el botón crezca en vertical</span>
+        <span class="n">boton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">fila</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">columna</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;ns&quot;</span><span class="p">)</span>
+
+<span class="c1">#Ahora asignamos el mismo peso a todas las filas </span>
+<span class="c1">#y ningún peso a las columnas.</span>
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="n">raiz</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Y si la ventana que produce el programa se hace más alta…</p>
+<div class="align-center figure" id="id11">
+<img alt="_images/programa5-2.png" src="_images/programa5-2.png" />
+<p class="caption"><span class="caption-text">Botones que aprovechan el espacio extra</span></p>
+</div>
+<p>¡Ahora sí se aprovecha la altura extra disponible! Ya tenemos un programa que parece adaptarse al espacio extra disponible. ¿Qué ocurre si hacemos la ventana más ancha por un lado?</p>
+<div class="align-center figure" id="id12">
+<img alt="_images/programa5-3.png" src="_images/programa5-3.png" />
+<p class="caption"><span class="caption-text">Descompensación en el espacio por los lados</span></p>
+</div>
+<p>El resultado ya no debería sorprendernos. Sabemos que</p>
+<ol class="arabic simple">
+<li>La columnas no tienen un peso asignado, así que no aprovechan el espacio disponible.</li>
+<li>Aunque lo hiciesen, los controles no tienen el parámetro <code class="docutils literal notranslate"><span class="pre">sticky</span></code> para ordenarles que aprovechen el espacio por los lados.</li>
+</ol>
+<p>Corregimos el programa…</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">MAX_FILAS</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">MAX_COLUMNAS</span><span class="o">=</span><span class="mi">4</span>
+
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">columna</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_COLUMNAS</span><span class="p">):</span>
+        <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Boton en ({0},{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">texto</span><span class="p">)</span>
+        <span class="c1">#Usamos sticky para que el botón aproveche </span>
+        <span class="c1">#todo el espacio sobrante</span>
+        <span class="n">boton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">fila</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">columna</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">)</span>
+
+<span class="c1">#Ahora asignamos el mismo peso a todas las filas </span>
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="n">raiz</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1">#Y configuramos también el peso de las columnas</span>
+<span class="k">for</span> <span class="n">columna</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_COLUMNAS</span><span class="p">):</span>
+    <span class="n">raiz</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="n">columna</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Y ahora podemos modificar libremente la ventana y veremos que todos los controles aprovechan el espacio disponible por cualquier dimensión.</p>
+<div class="align-center figure" id="id13">
+<img alt="_images/programa5-4.png" src="_images/programa5-4.png" />
+<p class="caption"><span class="caption-text">Interfaz correctamente diseñado</span></p>
+</div>
 </div>
 </div>
 <div class="section" id="indices-y-tablas">

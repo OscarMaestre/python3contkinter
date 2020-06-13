@@ -190,9 +190,79 @@ Como puede verse, aún no aprovechamos correctamente el espacio.
 Peso de una fila o columna
 --------------------------------------------------------------------------------
 
+Hemos visto que:
+
+* Las filas y columnas de un contenedor permiten diseñar el interfaz.
+* A veces un control podría ocupar varias filas y columnas y **por defecto no ocupará el espacio sobrante** 
+
+Aquí entra en juego el peso de las filas o columnas. Cuando diseñamos un interfaz basado en rejilla ocurre que por defecto **las filas y columnas no aprovecharán el espacio sobrante.** (este concepto ya debería sonarnos). Para permitir que se aproveche el espacio extra que pueda aparecer cuando se redimensiona una ventana podemos asignar a filas o columnas un **peso** 
+
+Volvamos a tomar nuestro programa que crea una pequeña matriz de botones y asignemos por ejemplo un peso igual a cada fila.
 
 
+.. literalinclude:: src/programa5.py
+   :language: python
 
+Que vuelve a producir este resultado en principio
+
+.. figure:: ./img/programa5.png
+    :align: center
+    :figclass: align-center
+
+    Matriz de botones con pesos
+
+Pero ahora veamos algo muy interesante. Cada fila tiene un peso (y de hecho todas tienen el mismo) ¿qué ocurre si aumentamos **la altura** de la ventana?
+
+.. figure:: ./img/programa5-1.png
+    :align: center
+    :figclass: align-center
+
+    Ventana con mayor altura
+
+Ha ocurrido algo que debería sonarnos: los botones parece que ahora disponen de más altura **pero no la están aprovechando.** Probablemente se deba a que no hemos usado ``sticky`` para aprovechar ese espacio extra.
+
+Modificamos el programa para que ahora los botones se ensanchen por arriba (norte, n) y por abajo (sur, s).
+
+.. literalinclude:: src/programa5-1.py
+   :language: python
+
+Y si la ventana que produce el programa se hace más alta...
+
+.. figure:: ./img/programa5-2.png
+    :align: center
+    :figclass: align-center
+
+    Botones que aprovechan el espacio extra
+
+
+¡Ahora sí se aprovecha la altura extra disponible! Ya tenemos un programa que parece adaptarse al espacio extra disponible. ¿Qué ocurre si hacemos la ventana más ancha por un lado?
+
+.. figure:: ./img/programa5-3.png
+    :align: center
+    :figclass: align-center
+
+    Descompensación en el espacio por los lados
+
+El resultado ya no debería sorprendernos. Sabemos que
+
+1. La columnas no tienen un peso asignado, así que no aprovechan el espacio disponible.
+2. Aunque lo hiciesen, los controles no tienen el parámetro ``sticky`` para ordenarles que aprovechen el espacio por los lados.
+
+Corregimos el programa...
+
+.. literalinclude:: src/programa5-2.py
+   :language: python
+
+Y ahora podemos modificar libremente la ventana y veremos que todos los controles aprovechan el espacio disponible por cualquier dimensión.
+
+.. figure:: ./img/programa5-4.png
+    :align: center
+    :figclass: align-center
+
+    Interfaz correctamente diseñado
+
+Jugando con los pesos
+================================================================================
 
 
 
