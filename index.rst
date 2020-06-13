@@ -118,10 +118,74 @@ Como vemos, al agrandar la ventana *los botones no se agrandan.* No solo se desp
 Anchura y altura de un control
 --------------------------------------------------------------------------------
 
+Un control no tiene por qué ocupar una sola "celda" de la rejilla. Usando parámetros como ``rowspan`` y ``columnspan`` se puede hacer que un control ocupe varias celdas tanto a lo ancho como a lo alto. Supongamos que creamos un programa como este, en el que se supone que hay un control que se extiende a lo largo de dos columnas (y por tanto debiera ser más ancho).
+
+.. literalinclude:: src/programa4.py
+   :language: python
+
+Si lo ejecutamos observaremos esto:
+
+.. figure:: ./img/programa4.png
+    :align: center
+    :figclass: align-center
+
+    Control que ocupa dos columnas
 
 
+¿Qué ha pasado?
+
+* El control **no se ha hecho más ancho** 
+* El control también se ha desplazado y parece estar "en mitad de la tabla"
 
 
+La respuesta es que **el grid/rejilla** ha reservado dos columnas para el botón pero **el botón no las está ocupando.** Esto se debe a que el botón no es tan ancho y le sobra sitio así que se limita a ser tan grande como el texto que contiene y el botón se sitúa en el centro de esa celda que mide dos columnas.
+
+Aquí entra en juego otro parámetro: ``sticky`` . Este parámetro permite forzar a que un control que aún puede crecer "pegue sus paredes" al lado o lados que le indiquemos. Por ejemplo, en este programa, el mismo botón puede ocupar dos celdas, pero está pegado al lado "este" (derecha), simbolizado con la cadena "e".
+
+
+.. literalinclude:: src/programa4-1.py
+   :language: python
+
+Si lo ejecutamos observaremos esto:
+
+.. figure:: ./img/programa4-1.png
+    :align: center
+    :figclass: align-center
+
+    Control con pared pegada al lado este.
+
+En el parámetro ``sticky`` se pueden usar varios lados a la vez para así conseguir que un control que no aprovecha todo el espacio que se le da **se vea forzado a ensancharse por varios lados a la vez y así aprovechar el espacio**.
+
+Así, este parámetro cobrará mucha importancia a la hora de diseñar interfaces de usuario que se adapten a distintas resoluciones y que por tanto aprovechen adecuadamente el espacio de pantalla extra que se nos pueda brindar.
+
+Si aplicamos la técnica a nuestro programa tendremos este código:
+
+.. literalinclude:: src/programa4-2.py
+   :language: python
+
+Que produce este resultado
+
+.. figure:: ./img/programa4-2.png
+    :align: center
+    :figclass: align-center
+
+    Control ensanchado con ``sticky`` 
+
+
+Ahora el interfaz **parece** funcionar como esperamos. Sin embargo, ¿qué ocurre cuando modificamos el tamaño de la ventana?
+
+.. figure:: ./img/programa4-3.png
+    :align: center
+    :figclass: align-center
+
+    Desaprovechamiento de espacio sobrante.
+
+Como puede verse, aún no aprovechamos correctamente el espacio.
+
+
+.. IMPORTANT::
+
+   En realidad, ``tkinter`` proporciona las constantes tk.N, tk.S, tk.E y tk.W en lugar de las cadenas "n", "s", "e" y "w". Sin embargo, y dado que las constantes se han mantenido con estos valores durante años (en realidad durante décadas) se ha optado por usar las cadenas, ya que es más fácil escribir algo como "nsew" que ``tk.N+tk.S+tk.E+tk.W`` . Incluso aunque se importe el espacio de nombres entero en este caso usar cadenas parece aportar más claridad, de ahí el enfoque de este texto de ignorar tales constantes.
 
 Peso de una fila o columna
 --------------------------------------------------------------------------------

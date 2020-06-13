@@ -12,9 +12,8 @@ for fila in range(0, MAX_FILAS):
         boton=tk.Button(raiz, text=texto)
         boton.grid(row=fila, column=columna)
 
-#Creamos un botón extra una fila más abajo y que ocupa 
-#dos columnas de ancho (parámetro columnspan)
+
 boton_extra=tk.Button(raiz, text="Boton en (3,1)")
-boton_extra.grid(row=3, column=1, columnspan=2)
+boton_extra.grid(row=3, column=1, columnspan=2, sticky="e")
 
 raiz.mainloop()
