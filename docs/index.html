@@ -319,7 +319,7 @@
 </div>
 <p>El resultado ya no debería sorprendernos. Sabemos que</p>
 <ol class="arabic simple">
-<li>La columnas no tienen un peso asignado, así que no aprovechan el espacio disponible.</li>
+<li>Las columnas no tienen un peso asignado, así que no aprovechan el espacio disponible.</li>
 <li>Aunque lo hiciesen, los controles no tienen el parámetro <code class="docutils literal notranslate"><span class="pre">sticky</span></code> para ordenarles que aprovechen el espacio por los lados.</li>
 </ol>
 <p>Corregimos el programa…</p>
@@ -355,6 +355,61 @@
 <p class="caption"><span class="caption-text">Interfaz correctamente diseñado</span></p>
 </div>
 </div>
+</div>
+<div class="section" id="creando-interfaces-con-tkinter">
+<h1>Creando interfaces con <code class="docutils literal notranslate"><span class="pre">tkinter</span></code><a class="headerlink" href="#creando-interfaces-con-tkinter" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Cuando se diseña un interfaz es raro que realmente se quiera hacer tan cuadriculado como el que acabamos de mostrar. Lo más normal es que se desee que los distintos controles ocupen distinto espacio en pantalla y que en caso de redimensionar siempre haya unos controles que sean más grandes que otros.</p>
+<p>Todo esto puede conseguirse jugando con nuestros dos principales parámetros:</p>
+<ul class="simple">
+<li>El parámetro <code class="docutils literal notranslate"><span class="pre">sticky</span></code> usado cuando añadimos un control a un «grid».</li>
+<li>Y asignando <strong>distintos pesos a las filas y columnas.</strong></li>
+</ul>
+<p>Por ejemplo, examinemos este programa, muy parecido a los anteriores pero en el cual configuramos algún peso de fila y columna de manera distinta.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">MAX_FILAS</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">MAX_COLUMNAS</span><span class="o">=</span><span class="mi">4</span>
+
+<span class="c1">#Creamos nuestra matriz de botones</span>
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">columna</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_COLUMNAS</span><span class="p">):</span>
+        <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Boton en ({0},{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">texto</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">fila</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">columna</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="s2">&quot;nsew&quot;</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_rowconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">grid_columnconfigure</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>En este programa los pesos se reparten:</p>
+<ul class="simple">
+<li>Peso 2 para la fila 0, peso 6 para la fila 1 y peso 2 para la fila 2. Lo representaremos como [2,6,2]</li>
+<li>Peso 2 para la columna 0, peso 4 para la columna 2, peso 2 para la columna 3 y peso 2 para la columna 3, o abreviadamente [2,4,2,2]</li>
+</ul>
+<p>Si examinamos las filas veremos que la suma total de pesos es <strong>10</strong> . Esto significa que si hacemos la ventana más alta ocurrirá que <strong>el espacio sobrante se repartirá proporcional a los pesos.</strong> Eso significa que si hacemos la ventana 100px más alta se darán 20px más a la fila 0, 60px más a la fila 1 y 20px más a la fila 2.</p>
+<p>Si examinamos los pesos de las columnas veremos que el total es también <strong>6</strong>. Así, si hacemos la ventana más ancha se repartirá el espacio sobrante de manera que las columnas 0,2 y 3 obtendrán la misma cantidad, pero la columna 2 será siempre más ancha. Los pesos quedarán [1/6, 3/6, 1/6, 1/6]</p>
+<p>Aquí podemos ver (usando un programa que muestra una regla en pantalla) que los repartos efectivamente corresponden con lo que hemos programado.</p>
+<div class="align-center figure" id="id14">
+<img alt="_images/regla_horizontal.png" src="_images/regla_horizontal.png" />
+<p class="caption"><span class="caption-text">Comprobación del reparto de pesos en horizontal.</span></p>
+</div>
+<p>En horizontal podemos comprobar que las columnas 0, 2 y 3 ocupan cada una unos 200 pixeles. Sin embargo, la columna 1 ocupa 600 pixeles, que es 3 veces más que las demás, exactamente como reflejan los pesos del programa.</p>
+<div class="align-center figure" id="id15">
+<img alt="_images/regla_vertical.png" src="_images/regla_vertical.png" />
+<p class="caption"><span class="caption-text">Comprobación del reparto de pesos en vertical.</span></p>
+</div>
+<p>En la parte vertical podemos ver que las filas 0 y 2 miden unos 100 pixeles. Sin embargo la fila 2 mide unos 300 px, es decir, el trip</p>
 </div>
 <div class="section" id="indices-y-tablas">
 <h1>Indices y tablas<a class="headerlink" href="#indices-y-tablas" title="Enlazar permanentemente con este título">¶</a></h1>

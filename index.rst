@@ -245,7 +245,7 @@ Y si la ventana que produce el programa se hace más alta...
 
 El resultado ya no debería sorprendernos. Sabemos que
 
-1. La columnas no tienen un peso asignado, así que no aprovechan el espacio disponible.
+1. Las columnas no tienen un peso asignado, así que no aprovechan el espacio disponible.
 2. Aunque lo hiciesen, los controles no tienen el parámetro ``sticky`` para ordenarles que aprovechen el espacio por los lados.
 
 Corregimos el programa...
@@ -261,8 +261,48 @@ Y ahora podemos modificar libremente la ventana y veremos que todos los controle
 
     Interfaz correctamente diseñado
 
-Jugando con los pesos
+Creando interfaces con ``tkinter`` 
 ================================================================================
+
+Cuando se diseña un interfaz es raro que realmente se quiera hacer tan cuadriculado como el que acabamos de mostrar. Lo más normal es que se desee que los distintos controles ocupen distinto espacio en pantalla y que en caso de redimensionar siempre haya unos controles que sean más grandes que otros.
+
+Todo esto puede conseguirse jugando con nuestros dos principales parámetros:
+
+* El parámetro ``sticky`` usado cuando añadimos un control a un "grid".
+* Y asignando **distintos pesos a las filas y columnas.** 
+
+Por ejemplo, examinemos este programa, muy parecido a los anteriores pero en el cual configuramos algún peso de fila y columna de manera distinta.
+
+
+.. literalinclude:: src/programa6.py
+   :language: python
+
+En este programa los pesos se reparten:
+
+* Peso 2 para la fila 0, peso 6 para la fila 1 y peso 2 para la fila 2. Lo representaremos como [2,6,2]
+* Peso 2 para la columna 0, peso 4 para la columna 2, peso 2 para la columna 3 y peso 2 para la columna 3, o abreviadamente [2,4,2,2]
+
+Si examinamos las filas veremos que la suma total de pesos es **10** . Esto significa que si hacemos la ventana más alta ocurrirá que **el espacio sobrante se repartirá proporcional a los pesos.** Eso significa que si hacemos la ventana 100px más alta se darán 20px más a la fila 0, 60px más a la fila 1 y 20px más a la fila 2.
+
+Si examinamos los pesos de las columnas veremos que el total es también **6**. Así, si hacemos la ventana más ancha se repartirá el espacio sobrante de manera que las columnas 0,2 y 3 obtendrán la misma cantidad, pero la columna 2 será siempre más ancha. Los pesos quedarán [1/6, 3/6, 1/6, 1/6]
+
+Aquí podemos ver (usando un programa que muestra una regla en pantalla) que los repartos efectivamente corresponden con lo que hemos programado.
+
+.. figure:: ./img/regla_horizontal.png
+    :align: center
+    :figclass: align-center
+
+    Comprobación del reparto de pesos en horizontal.
+
+En horizontal podemos comprobar que las columnas 0, 2 y 3 ocupan cada una unos 200 pixeles. Sin embargo, la columna 1 ocupa 600 pixeles, que es 3 veces más que las demás, exactamente como reflejan los pesos del programa.
+
+.. figure:: ./img/regla_vertical.png
+    :align: center
+    :figclass: align-center
+
+    Comprobación del reparto de pesos en vertical.
+
+En la parte vertical podemos ver que las filas 0 y 2 miden unos 100 pixeles. Sin embargo la fila 2 mide unos 300 px, es decir, el trip
 
 
 
