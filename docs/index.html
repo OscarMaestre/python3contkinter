@@ -1,0 +1,221 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tkinter con Python3 &#8212; documentación de Tkinter con Python3 - 1.0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tkinter-con-python3">
+<h1>Tkinter con Python3<a class="headerlink" href="#tkinter-con-python3" title="Enlazar permanentemente con este título">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="introduccion">
+<h1>Introducción<a class="headerlink" href="#introduccion" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Python es un lenguaje de programación muy potente que se caracteriza por incluir un montón de módulos en su instalación estándar. Uno de estos módulos es <code class="docutils literal notranslate"><span class="pre">tkinter</span></code> que permite la construcción de interfaces gráficas de usuario.</p>
+<p>Este módulo incluye no solo muchos controles como botones o cajas de texto sino también dos <strong>gestores de geometría</strong> que permiten incluir elementos en una ventana y permitir a estos algoritmos el redibujado de controles cuando una ventana cambia de tamaño.</p>
+<p>Sin embargo su uso puede ser relativamente complicado, especialmente al principio. En este documento se explica como trabajar con el gestor de geometría llamado <code class="docutils literal notranslate"><span class="pre">grid</span></code>, el más flexible pero también el más complejo de usar de los dos.</p>
+</div>
+<div class="section" id="primer-programa">
+<h1>Primer programa<a class="headerlink" href="#primer-programa" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>Todo programa <code class="docutils literal notranslate"><span class="pre">tkinter</span></code> se caracteriza por</p>
+<ul class="simple">
+<li>Instancia un objeto de la clase <code class="docutils literal notranslate"><span class="pre">Tk</span></code> <strong>una y solo una vez</strong> . Este objeto es la «ventana principal» del programa.</li>
+<li>Debemos siempre llamar al método <code class="docutils literal notranslate"><span class="pre">mainloop</span></code> de este objeto. Este método tomará el control y se ejecutará hasta que cerremos la ventana (de hecho ejecuta el bucle de gestión de eventos de <code class="docutils literal notranslate"><span class="pre">tkinter</span></code>)</li>
+</ul>
+<p>Un primer programa mínimo sería así:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="c1">#Ventana principal</span>
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="c1">#Ejecutamos el bucle de gestión de eventos</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Y mostraría esto:</p>
+<div class="align-center figure" id="id1">
+<a class="reference internal image-reference" href="_images/programa1.png"><img alt="_images/programa1.png" src="_images/programa1.png" style="width: 123.6px; height: 139.2px;" /></a>
+<p class="caption"><span class="caption-text">Programa mínimo en tkinter</span></p>
+</div>
+</div>
+<div class="section" id="anadiendo-controles">
+<h1>Añadiendo controles<a class="headerlink" href="#anadiendo-controles" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>En <code class="docutils literal notranslate"><span class="pre">tkinter</span></code> el proceso de construcción del GUI está basado en objetos pero la mecánica general es que <strong>creamos objetos y en dicha creación indicamos qué objeto va a ser el padre o contenedor.</strong> Este proceso es bastante distinto del de Java donde lo que se hace es crear un objeto contenedor, luego un control y luego llamar hace algo como <code class="docutils literal notranslate"><span class="pre">contenedor.add(control)</span></code></p>
+<p>Así, por ejemplo, podemos añadir un botón a nuestra ventana usando un programa como el siguiente:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="c1">#Ventana principal</span>
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="c1">#creamos un botón cuyo &quot;padre&quot; es la ventana principal</span>
+<span class="n">boton1</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">master</span><span class="o">=</span><span class="n">raiz</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Soy un botón&quot;</span><span class="p">)</span>
+<span class="c1">#En realidad, con solo un control no haría falta indicar</span>
+<span class="c1">#ni fila ni columna</span>
+<span class="n">boton1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Que mostraría esto:</p>
+<div class="align-center figure" id="id2">
+<img alt="_images/programa2.png" src="_images/programa2.png" />
+<p class="caption"><span class="caption-text">Un botón en tkinter</span></p>
+</div>
+</div>
+<div class="section" id="el-gestor-de-geometria-grid">
+<h1>El gestor de geometría <code class="docutils literal notranslate"><span class="pre">grid</span></code><a class="headerlink" href="#el-gestor-de-geometria-grid" title="Enlazar permanentemente con este título">¶</a></h1>
+<p>En el programa anterior ya podemos ver que al usar <code class="docutils literal notranslate"><span class="pre">grid</span></code> debemos indicar la fila y la columna en la que se ubica el botón. Así, en el programa anterior hemos creado un botón y le hemos ordenador que se integre en la rejilla del contenedor padre (en este caso la ventana raíz) en la posición (0,0)</p>
+<p>Es importante observar las diferencias de <code class="docutils literal notranslate"><span class="pre">tkinter</span></code> con respecto a otros lenguajes, como por ejemplo en Java. En Java se crea un contenedor, al contenedor se le asigna una geometría y luego se llama al método <code class="docutils literal notranslate"><span class="pre">add</span></code> del contenedor. Sin embargo, en <code class="docutils literal notranslate"><span class="pre">tkinter</span></code> el hijo «ordena indirectamente al padre» que se cree una rejilla. Recordamos también que en <code class="docutils literal notranslate"><span class="pre">tkinter</span></code> al crear un control se debe indicar en esa creación quien es el control padre o contenedor.</p>
+<p>En un grid hay algunas consideraciones importantes:</p>
+<ul class="simple">
+<li><strong>Cuantas filas y columnas va a tener el grid</strong>. Esta cantidad no se indica «a priori» sino que a medida que vayamos construyendo elementos podemos ir indicando nuevas coordenadas.</li>
+<li><strong>Cuantas filas y columnas va a ocupar un control</strong> . Un control puede ocupar más espacio y no limitarse solo a «una celda de la tabla».</li>
+<li><strong>Qué peso va a tener cada fila y cada columna</strong> . Si una ventana se redimensiona y se hace más grande o más pequeña podemos decidir como repartir proporcionalmente el espacio sobrante. Esto no es obligatorio de hacer pero ayuda a conseguir diseños bastante flexibles que se adaptan automáticamente a distintas resoluciones.</li>
+</ul>
+<p>Veamos estos puntos uno por uno.</p>
+<div class="section" id="filas-y-columnas-de-un-grid">
+<h2>Filas y columnas de un grid<a class="headerlink" href="#filas-y-columnas-de-un-grid" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Supongamos que queremos crear un interfaz como este:</p>
+<div class="align-center figure" id="id3">
+<img alt="_images/programa3-1.png" src="_images/programa3-1.png" />
+<p class="caption"><span class="caption-text">Una matriz de botones</span></p>
+</div>
+<p>Un posible programa podría ser este:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/python3</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="kn">as</span> <span class="nn">tk</span>
+
+<span class="c1">#Ventana principal</span>
+<span class="n">raiz</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+
+<span class="n">MAX_FILAS</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">MAX_COLUMNAS</span><span class="o">=</span><span class="mi">4</span>
+
+<span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_FILAS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">columna</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">MAX_COLUMNAS</span><span class="p">):</span>
+        <span class="c1">#Se crea un boton y se indica a ese boton</span>
+        <span class="c1">#que se posiciones en una cierta fila y columna</span>
+        <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Boton en ({0},{1})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fila</span><span class="p">,</span> <span class="n">columna</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">raiz</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">texto</span><span class="p">)</span>
+        <span class="n">boton</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="n">fila</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">columna</span><span class="p">)</span>
+
+<span class="n">raiz</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Este programa parece tener un aspecto razonable. Pero veamos lo que ocurre si agrandamos la ventana:</p>
+<div class="align-center figure" id="id4">
+<img alt="_images/programa3-2.png" src="_images/programa3-2.png" />
+<p class="caption"><span class="caption-text">Desaprovechamiento del espacio</span></p>
+</div>
+<p>Como vemos, al agrandar la ventana <em>los botones no se agrandan</em> No solo se desperdicia espacio sino que también el aspecto del interfaz es poco profesional.</p>
+</div>
+<div class="section" id="anchura-y-altura-de-un-control">
+<h2>Anchura y altura de un control<a class="headerlink" href="#anchura-y-altura-de-un-control" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+<div class="section" id="peso-de-una-fila-o-columna">
+<h2>Peso de una fila o columna<a class="headerlink" href="#peso-de-una-fila-o-columna" title="Enlazar permanentemente con este título">¶</a></h2>
+</div>
+</div>
+<div class="section" id="indices-y-tablas">
+<h1>Indices y tablas<a class="headerlink" href="#indices-y-tablas" title="Enlazar permanentemente con este título">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Índice</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Índice de Módulos</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Página de Búsqueda</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Tkinter con Python3</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegación</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Ir a" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Oscar GG.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
