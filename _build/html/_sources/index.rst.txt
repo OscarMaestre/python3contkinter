@@ -180,6 +180,8 @@ Ahora el interfaz **parece** funcionar como esperamos. Sin embargo, ¿qué ocurr
 
     Desaprovechamiento de espacio sobrante.
 
+Como puede verse, aún no aprovechamos correctamente el espacio.
+
 
 .. IMPORTANT::
 
