@@ -271,7 +271,7 @@ Todo esto puede conseguirse jugando con nuestros dos principales parámetros:
 * El parámetro ``sticky`` usado cuando añadimos un control a un "grid".
 * Y asignando **distintos pesos a las filas y columnas.** 
 
-Por ejemplo, examinemos este programa, muy parecido a los anteriores pero en el cual configuramos algún peso de fila y columna de manera distinta.
+Por ejemplo, examinemos este programa, muy parecido a los anteriores pero en el cual configuramos algún peso de fila y columna de manera distinta. Para poder ver los efectos forzamos a que la ventana tenga inicialmente unas medidas de 600x600.
 
 
 .. literalinclude:: src/programa6.py
@@ -284,26 +284,48 @@ En este programa los pesos se reparten:
 
 Si examinamos las filas veremos que la suma total de pesos es **10** . Esto significa que si hacemos la ventana más alta ocurrirá que **el espacio sobrante se repartirá proporcional a los pesos.** Eso significa que si hacemos la ventana 100px más alta se darán 20px más a la fila 0, 60px más a la fila 1 y 20px más a la fila 2.
 
-Si examinamos los pesos de las columnas veremos que el total es también **6**. Así, si hacemos la ventana más ancha se repartirá el espacio sobrante de manera que las columnas 0,2 y 3 obtendrán la misma cantidad, pero la columna 2 será siempre más ancha. Los pesos quedarán [1/6, 3/6, 1/6, 1/6]
+Si examinamos los pesos de las columnas veremos que el total ES **6**. Así, si hacemos la ventana más ancha se repartirá el espacio sobrante de manera que las columnas 0,2 y 3 obtendrán la misma cantidad, pero la columna 2 será siempre más ancha. Los pesos quedarán [2/10, 4/10, 2/10, 4/10]. Si hacemos la ventana más ancha, la columna 2 debe recibir el doble de ancho extra que la 0, la 1 o la 3.
 
-Aquí podemos ver (usando un programa que muestra una regla en pantalla) que los repartos efectivamente corresponden con lo que hemos programado.
+Aquí podemos ver (usando un programa que muestra una regla en pantalla) que los repartos efectivamente corresponden con lo que hemos programado. En primer lugar mostramos la ventana y comprobamos que efectivamente mide 600px (o casi, las imágenes se han tomado con toda la precisión que se ha podido)
 
-.. figure:: ./img/regla_horizontal.png
+.. figure:: ./img/anchoantes.png
     :align: center
     :figclass: align-center
 
-    Comprobación del reparto de pesos en horizontal.
+    Ventana inicial de 600x600
 
-En horizontal podemos comprobar que las columnas 0, 2 y 3 ocupan cada una unos 200 pixeles. Sin embargo, la columna 1 ocupa 600 pixeles, que es 3 veces más que las demás, exactamente como reflejan los pesos del programa.
+Si examinamos la regla veremos que las medidas son más o menos así:
 
-.. figure:: ./img/regla_vertical.png
+* Columna 0: 140px.
+* Columna 1: 180px.
+* Columna 2: 140px.
+* Columna 3: 140px.
+
+Es decir, en total 600px. Despues hemos cambiado el tamaño de la ventana y la hemos hecho de 900px de ancho (que se muestra en la figura siguiente)
+
+.. figure:: ./img/anchodespues.png
     :align: center
     :figclass: align-center
 
     Comprobación del reparto de pesos en vertical.
 
-En la parte vertical podemos ver que las filas 0 y 2 miden unos 100 pixeles. Sin embargo la fila 2 mide unos 300 px, es decir, el trip
+Ahora las medidas son así:
 
+
+* Columna 0: 200px.
+* Columna 1: 300px.
+* Columna 2: 200px.
+* Columna 3: 200px.
+
+Si examinamos la hoja de cálculo siguiente veremos cuantos pixeles extra ha recibido cada columna.
+
+.. figure:: ./img/hojacalculoanchuras.png
+    :align: center
+    :figclass: align-center
+
+    Hoja de cálculo con las matemáticas de los cambios
+
+En ella podemos ver que efectivamente, la columna 2 ha recibido el doble de espacio extra que las otras columnas. De todas maneras, el algoritmo de asignación de espacio dice en su documentación más o menos lo siguiente: "el algoritmo de asignación de espacio extra respetará en la medida de lo posible los pesos", con lo cual no se deben esperar garantías en cuanto a la colocación exacta de los elementos.
 
 
 Indices y tablas

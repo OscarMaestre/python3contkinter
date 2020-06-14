@@ -13,6 +13,8 @@ for fila in range(0, MAX_FILAS):
         boton=tk.Button(raiz, text=texto)
         boton.grid(row=fila, column=columna, sticky="nsew", padx=0, pady=0)
 
+
+raiz.geometry("600x600")
 raiz.grid_rowconfigure(0, weight=2)
 raiz.grid_rowconfigure(1, weight=6)
 raiz.grid_rowconfigure(2, weight=2)
